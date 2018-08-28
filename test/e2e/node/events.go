@@ -66,6 +66,8 @@ var _ = SIGDescribe("Events", func() {
 			},
 		}
 
+		framework.InjectAnnotationIfSandboxContainerEnable(pod)
+
 		By("submitting the pod to kubernetes")
 		defer func() {
 			By("deleting the pod")

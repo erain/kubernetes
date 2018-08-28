@@ -420,6 +420,15 @@ func RunIfContainerRuntimeIs(runtimes ...string) {
 	Skipf("Skipped because container runtime %q is not in %s", TestContext.ContainerRuntime, runtimes)
 }
 
+func InjectAnnotationIfSandboxContainerEnable(pod *v1.Pod) {
+	if !TestContext.EnableSandboxContainer {
+		return
+	}
+	annotations := pod.GetObjectMeta().GetAnnotations()
+	annotations["io.kubernetes.cri.untrusted-workload"] = "true"
+	pod.SetAnnotations(annotations)
+}
+
 func RunIfSystemSpecNameIs(names ...string) {
 	for _, name := range names {
 		if name == TestContext.SystemSpecName {
