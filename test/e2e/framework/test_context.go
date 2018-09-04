@@ -126,6 +126,7 @@ type TestContextType struct {
 	KubernetesAnywherePath string
 
 	// Annotations used for to test existing annotation based features, e.g. seccomp profile, sandbox container etc.
+	// Usage: --default-pod-annotation=k1=v1,k2=v2.
 	DefaultPodAnnotations map[string]string
 
 	// Viper-only parameters.  These will in time replace all flags.

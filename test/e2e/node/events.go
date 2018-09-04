@@ -66,10 +66,6 @@ var _ = SIGDescribe("Events", func() {
 			},
 		}
 
-		// Example for using DefaultPodAnnotation flag.
-		// TODO(erain): remove this when sending the upstream PR.
-		framework.InjectDefaultPodAnnotations(pod)
-
 		By("submitting the pod to kubernetes")
 		defer func() {
 			By("deleting the pod")
