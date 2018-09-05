@@ -53,6 +53,8 @@ func testPreStop(c clientset.Interface, ns string) {
 			},
 		},
 	}
+	framework.InjectDefaultPodAnnotationsForPod(podDescr)
+
 	By(fmt.Sprintf("Creating server pod %s in namespace %s", podDescr.Name, ns))
 	podDescr, err := c.CoreV1().Pods(ns).Create(podDescr)
 	framework.ExpectNoError(err, fmt.Sprintf("creating pod %s", podDescr.Name))
@@ -95,6 +97,7 @@ func testPreStop(c clientset.Interface, ns string) {
 			},
 		},
 	}
+	framework.InjectDefaultPodAnnotationsForPod(preStopDescr)
 
 	By(fmt.Sprintf("Creating tester pod %s in namespace %s", preStopDescr.Name, ns))
 	preStopDescr, err = c.CoreV1().Pods(ns).Create(preStopDescr)

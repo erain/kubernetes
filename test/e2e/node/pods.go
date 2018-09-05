@@ -74,6 +74,8 @@ var _ = SIGDescribe("Pods Extended", func() {
 				},
 			}
 
+			framework.InjectDefaultPodAnnotationsForPod(pod)
+
 			By("setting up watch")
 			selector := labels.SelectorFromSet(labels.Set(map[string]string{"time": value}))
 			options := metav1.ListOptions{LabelSelector: selector.String()}
@@ -238,6 +240,8 @@ var _ = SIGDescribe("Pods Extended", func() {
 					},
 				},
 			}
+
+			framework.InjectDefaultPodAnnotationsForPod(pod)
 
 			By("submitting the pod to kubernetes")
 			podClient.Create(pod)

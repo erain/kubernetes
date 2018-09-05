@@ -312,6 +312,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		rcName := "simpletest.rc"
 		uniqLabels := getUniqLabel("gctest", "delete_pods")
 		rc := newOwnerRC(f, rcName, 2, uniqLabels)
+		framework.InjectDefaultPodAnnotationsForReplicationController(rc)
 		By("create the rc")
 		rc, err := rcClient.Create(rc)
 		if err != nil {
@@ -370,6 +371,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		rcName := "simpletest.rc"
 		uniqLabels := getUniqLabel("gctest", "orphan_pods")
 		rc := newOwnerRC(f, rcName, estimateMaximumPods(clientSet, 10, 100), uniqLabels)
+		framework.InjectDefaultPodAnnotationsForReplicationController(rc)
 		By("create the rc")
 		rc, err := rcClient.Create(rc)
 		if err != nil {
@@ -485,6 +487,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		deploymentName := "simpletest.deployment"
 		uniqLabels := getUniqLabel("gctest", "delete_rs")
 		deployment := newOwnerDeployment(f, deploymentName, uniqLabels)
+		framework.InjectDefaultPodAnnotationsForDeployment(deployment)
 		By("create the deployment")
 		createdDeployment, err := deployClient.Create(deployment)
 		if err != nil {
@@ -544,6 +547,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		deploymentName := "simpletest.deployment"
 		uniqLabels := getUniqLabel("gctest", "orphan_rs")
 		deployment := newOwnerDeployment(f, deploymentName, uniqLabels)
+		framework.InjectDefaultPodAnnotationsForDeployment(deployment)
 		By("create the deployment")
 		createdDeployment, err := deployClient.Create(deployment)
 		if err != nil {
@@ -618,6 +622,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		rcName := "simpletest.rc"
 		uniqLabels := getUniqLabel("gctest", "delete_pods_foreground")
 		rc := newOwnerRC(f, rcName, estimateMaximumPods(clientSet, 10, 100), uniqLabels)
+		framework.InjectDefaultPodAnnotationsForReplicationController(rc)
 		By("create the rc")
 		rc, err := rcClient.Create(rc)
 		if err != nil {
@@ -708,6 +713,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		halfReplicas := int(replicas / 2)
 		uniqLabels_deleted := getUniqLabel("gctest_d", "valid_and_pending_owners_d")
 		rc1 := newOwnerRC(f, rc1Name, replicas, uniqLabels_deleted)
+		framework.InjectDefaultPodAnnotationsForReplicationController(rc1)
 		By("create the rc1")
 		rc1, err := rcClient.Create(rc1)
 		if err != nil {
@@ -716,6 +722,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		rc2Name := "simpletest-rc-to-stay"
 		uniqLabels_stay := getUniqLabel("gctest_s", "valid_and_pending_owners_s")
 		rc2 := newOwnerRC(f, rc2Name, 0, uniqLabels_stay)
+		framework.InjectDefaultPodAnnotationsForReplicationController(rc2)
 		By("create the rc2")
 		rc2, err = rcClient.Create(rc2)
 		if err != nil {
@@ -817,12 +824,15 @@ var _ = SIGDescribe("Garbage collector", func() {
 		clientSet := f.ClientSet
 		podClient := clientSet.CoreV1().Pods(f.Namespace.Name)
 		pod1 := newGCPod("pod1")
+		framework.InjectDefaultPodAnnotationsForPod(pod1)
 		pod1, err := podClient.Create(pod1)
 		Expect(err).NotTo(HaveOccurred())
 		pod2 := newGCPod("pod2")
+		framework.InjectDefaultPodAnnotationsForPod(pod2)
 		pod2, err = podClient.Create(pod2)
 		Expect(err).NotTo(HaveOccurred())
 		pod3 := newGCPod("pod3")
+		framework.InjectDefaultPodAnnotationsForPod(pod3)
 		pod3, err = podClient.Create(pod3)
 		Expect(err).NotTo(HaveOccurred())
 		// create circular dependency

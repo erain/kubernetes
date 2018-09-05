@@ -18,6 +18,7 @@ package utils
 
 import (
 	"fmt"
+	"k8s.io/kubernetes/test/e2e/framework"
 	"math"
 	"os"
 	"sync"
@@ -573,6 +574,7 @@ func (config *RCConfig) create() error {
 			},
 		},
 	}
+	framework.InjectDefaultPodAnnotationsForReplicationController(rc)
 
 	if len(config.SecretNames) > 0 {
 		attachSecrets(rc.Spec.Template, config.SecretNames)

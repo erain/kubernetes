@@ -56,6 +56,7 @@ import (
 	extensions "k8s.io/api/extensions/v1beta1"
 	apierrs "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -420,7 +421,7 @@ func RunIfContainerRuntimeIs(runtimes ...string) {
 	Skipf("Skipped because container runtime %q is not in %s", TestContext.ContainerRuntime, runtimes)
 }
 
-func InjectDefaultPodAnnotations(pod *v1.Pod) {
+func InjectDefaultPodAnnotationsForPod(pod *v1.Pod) {
 	defaultPodAnnotations := TestContext.DefaultPodAnnotations
 	if len(defaultPodAnnotations) == 0 {
 		return
@@ -430,6 +431,42 @@ func InjectDefaultPodAnnotations(pod *v1.Pod) {
 		annotations[k] = v
 	}
 	pod.SetAnnotations(annotations)
+}
+
+func InjectDefaultPodAnnotationsForDeployment(deployment *v1beta1.Deployment) {
+	defaultPodAnnotations := TestContext.DefaultPodAnnotations
+	if len(defaultPodAnnotations) == 0 {
+		return
+	}
+	annotations := deployment.Spec.Template.GetAnnotations()
+	for k, v := range defaultPodAnnotations {
+		annotations[k] = v
+	}
+	deployment.Spec.Template.SetAnnotations(annotations)
+}
+
+func InjectDefaultPodAnnotationsForReplicationController(rc *v1.ReplicationController) {
+	defaultPodAnnotations := TestContext.DefaultPodAnnotations
+	if len(defaultPodAnnotations) == 0 {
+		return
+	}
+	annotations := rc.Spec.Template.GetAnnotations()
+	for k, v := range defaultPodAnnotations {
+		annotations[k] = v
+	}
+	rc.Spec.Template.SetAnnotations(annotations)
+}
+
+func InjectDefaultPodAnnotationsForStatefulSet(ss *apps.StatefulSet) {
+	defaultPodAnnotations := TestContext.DefaultPodAnnotations
+	if len(defaultPodAnnotations) == 0 {
+		return
+	}
+	annotations := ss.Spec.Template.GetAnnotations()
+	for k, v := range defaultPodAnnotations {
+		annotations[k] = v
+	}
+	ss.Spec.Template.SetAnnotations(annotations)
 }
 
 func RunIfSystemSpecNameIs(names ...string) {
@@ -3538,6 +3575,7 @@ func CreatePodOrFail(c clientset.Interface, ns, name string, labels map[string]s
 			},
 		},
 	}
+	InjectDefaultPodAnnotationsForPod(pod)
 	_, err := c.CoreV1().Pods(ns).Create(pod)
 	Expect(err).NotTo(HaveOccurred())
 }

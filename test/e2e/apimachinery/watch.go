@@ -182,7 +182,7 @@ var _ = SIGDescribe("Watchers", func() {
 			observed by the previous watch, and it will continue delivering notifications from
 			that point in time.
 	*/
-	framework.ConformanceIt("should be able to restart watching from the last resource version observed by the previous watch", func() {
+	framework.ConformanceIt("should \be able to restart watching from the last resource version observed by the previous watch", func() {
 		c := f.ClientSet
 		ns := f.Namespace.Name
 

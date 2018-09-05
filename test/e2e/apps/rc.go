@@ -109,6 +109,7 @@ func TestReplicationControllerServeImageOrFail(f *framework.Framework, test stri
 	By(fmt.Sprintf("Creating replication controller %s", name))
 	newRC := newRC(name, replicas, map[string]string{"name": name}, name, image)
 	newRC.Spec.Template.Spec.Containers[0].Ports = []v1.ContainerPort{{ContainerPort: 9376}}
+	framework.InjectDefaultPodAnnotationsForReplicationController(newRC)
 	_, err := f.ClientSet.CoreV1().ReplicationControllers(f.Namespace.Name).Create(newRC)
 	Expect(err).NotTo(HaveOccurred())
 

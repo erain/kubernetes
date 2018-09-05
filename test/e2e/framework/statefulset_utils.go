@@ -787,7 +787,7 @@ func NewStatefulSet(name, ns, governingSvcName string, replicas int32, statefulP
 		})
 	}
 
-	return &apps.StatefulSet{
+	ss := &apps.StatefulSet{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "StatefulSet",
 			APIVersion: "apps/v1",
@@ -822,6 +822,8 @@ func NewStatefulSet(name, ns, governingSvcName string, replicas int32, statefulP
 			ServiceName:          governingSvcName,
 		},
 	}
+	InjectDefaultPodAnnotationsForStatefulSet(ss)
+	return ss
 }
 
 // NewStatefulSetScale creates a new StatefulSet scale subresource and returns it

@@ -722,6 +722,7 @@ var _ = SIGDescribe("StatefulSet", func() {
 					NodeName: node.Name,
 				},
 			}
+			framework.InjectDefaultPodAnnotationsForPod(pod)
 			pod, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(pod)
 			framework.ExpectNoError(err)
 

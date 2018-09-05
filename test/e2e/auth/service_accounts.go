@@ -223,6 +223,7 @@ var _ = SIGDescribe("ServiceAccounts", func() {
 				RestartPolicy: v1.RestartPolicyNever,
 			},
 		}
+		framework.InjectDefaultPodAnnotationsForPod(pod)
 
 		pod.Spec.Containers = append(pod.Spec.Containers, v1.Container{
 			Name:  "namespace-test",
@@ -388,6 +389,7 @@ var _ = SIGDescribe("ServiceAccounts", func() {
 					AutomountServiceAccountToken: tc.AutomountPodSpec,
 				},
 			}
+			framework.InjectDefaultPodAnnotationsForPod(pod)
 			createdPod, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(pod)
 			framework.ExpectNoError(err)
 			framework.Logf("created pod %s", tc.PodName)
